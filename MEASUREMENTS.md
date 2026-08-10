@@ -14,16 +14,25 @@ URL фида: `https://tzheldibayev.github.io/kuntizbe/test.ics`
 curl -I https://tzheldibayev.github.io/kuntizbe/test.ics
 ```
 
+Измерено 2026-08-10.
+
 | Заголовок | Значение |
 |---|---|
-| `content-type` | ? |
-| `etag` | ? |
-| `last-modified` | ? |
-| `cache-control` | ? |
+| `content-type` | `text/calendar` ✅ |
+| `etag` | `"6a79e6fb-25b"` |
+| `last-modified` | `Mon, 10 Aug 2026 14:58:03 GMT` |
+| `cache-control` | `max-age=600` |
 
-Ответ `304` на условный запрос (`curl -I -H 'If-None-Match: <etag>'`): ?
+Ответ `304` на условный запрос (`If-None-Match`): **да**.
 
-Если `content-type` не `text/calendar` — на своём домене (Этап 3) его придётся задавать явно.
+Байты фида в сети идентичны локальным (`curl … | cmp - docs/test.ics`) — `CRLF` пережил git и Pages. `.gitattributes` с `*.ics -text` работает.
+
+Наблюдения:
+
+- Pages отдаёт `text/calendar` сам, без настройки. На своём домене (Этап 3) это надо будет обеспечить явно.
+- `max-age=600` — CDN держит ответ 10 минут. Эти минуты входят в наблюдаемую задержку из §3 и не являются задержкой клиента.
+- Первые ~2 минуты после включения Pages URL отдавал 404: сборка ещё шла. Не путать с ошибкой конфигурации.
+- Корень `tzheldibayev.github.io` отдаёт 404 — это ожидаемо, проект живёт на `/kuntizbe/`.
 
 ---
 
