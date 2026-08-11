@@ -2,20 +2,27 @@ package rules
 
 import "testing"
 
-func TestLoadSamozanyaty(t *testing.T) {
+func TestLoadDataRules(t *testing.T) {
 	rs, err := Load("../../data/rules")
 	if err != nil {
 		t.Fatalf("Load: %v", err)
 	}
-	if len(rs) != 1 {
-		t.Fatalf("ожидалось 1 правило, получено %d", len(rs))
+	wantIDs := map[string]bool{
+		"snr-self-employed-social": true,
+		"fno-910-00":               true,
+		"fno-910-00-payment":       true,
+		"ip-uproshchenka-social":   true,
 	}
-	r := rs[0]
-	if r.ID != "snr-self-employed-social" {
-		t.Errorf("id = %q", r.ID)
+	if len(rs) != len(wantIDs) {
+		t.Fatalf("ожидалось %d правил, получено %d", len(wantIDs), len(rs))
 	}
-	if r.SourceURL == "" {
-		t.Error("пустой source_url")
+	for _, r := range rs {
+		if !wantIDs[r.ID] {
+			t.Errorf("неожиданный id %q", r.ID)
+		}
+		if r.SourceURL == "" {
+			t.Errorf("%q: пустой source_url", r.ID)
+		}
 	}
 }
 

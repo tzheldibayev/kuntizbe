@@ -33,6 +33,17 @@ var feeds = []feed{
 		calDesc: "Сроки налоговой отчётности РК. Источник указан в каждом событии.",
 		axes:    map[string]string{"regime": "snr-self-employed"},
 	},
+	{
+		file:    "ip-uproshchenka.ics",
+		calName: "Налоги — ИП на упрощёнке",
+		calDesc: "Сроки налоговой отчётности РК. Источник указан в каждом событии.",
+		axes: map[string]string{
+			"form":      "ip",
+			"regime":    "snr-simplified",
+			"vat":       "vat-none",
+			"employees": "no-employees",
+		},
+	},
 }
 
 func main() {
